@@ -1,6 +1,9 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'dart:convert';
 
 class User{
-  User(this.email,this.username,this.password);
+  User({Key? key,required this.email,required this.username,required this.password});
   String username;
   String password;
   String email;
@@ -8,4 +11,11 @@ class User{
   void setName(String name){
     username = name;
   }
+  void setEmail(String email){
+    this.email = email;
+  }
+  void setPassword(String password){
+    this.password = password;
+  }
+
 }
