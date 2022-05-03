@@ -6,4 +6,4 @@ User user = User(email: "", username: "", password: "");
 
 bool isAuthOn = true;
 
-String buildVersion = "0.0.9";
+String buildVersion = "0.0.13";

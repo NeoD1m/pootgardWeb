@@ -13,7 +13,7 @@ class HowToPlay extends StatefulWidget {
 }
 
 class HowToPlayState extends State<HowToPlay> {
-  final List<bool> _isPanelOpen = List.filled(4, false);
+  final List<bool> _isPanelOpen = List.filled(13, false);
 
   @override
   Widget build(BuildContext context) {
@@ -51,10 +51,20 @@ class HowToPlayState extends State<HowToPlay> {
                   //expandedHeaderPadding: EdgeInsets.only(top: 100),
                   //dividerColor: CoolColors.mainColor,
                   children: [
-                    CoolExpansionPanel(0,"Регистрация"),
-                    CoolExpansionPanel(1,"Базовые игровые механики"),
-                    CoolExpansionPanel(2,"Хз что сюда написать"),
-                    CoolExpansionPanel(3,"тем более сюда"),
+                    CoolExpansionPanel(0,"Какой аккаунт использовать?","Для игры используется аккаунт с сайта pootgard.fun, создать который можно в личном кабинете. Этот же аккаунт используется для авторизации в лаунчере.",),
+                    CoolExpansionPanel(1,"Лаунчер","Играть на сервере можно только через лаунчер Euphoria пройдя авторизацию, оффициальный и tlauncher работать не будут."),
+                    CoolExpansionPanel(2,"Режим боя","В игре существует два режима: боевой и строительный, для переключения по умолчанию используется кнопка R."),
+                    CoolExpansionPanel(3,"Проблемы с подключением","Если у вас наблюдаются проблемы с подключением используйте VPN, например бесплатный OpenVPN."),
+                    CoolExpansionPanel(4, "Сложность", "Сложность повышается при отдалении от спауна, у мобов повышается хп и урон."),
+                    CoolExpansionPanel(5, "Прокачка", "За полученный опыт с убийства мобов вы получаете очки прокачки, потратить их можно нажав на E и кликнув на свиток."),
+                    CoolExpansionPanel(6, "Голосовой чат", "По умолчанию голосовой чат настроен на push-to-talk и активируется на кнопку Caps Lock, изменить настройки можно в игре в меню Voice Settings."),
+                    CoolExpansionPanel(7, "Сколько нужно оперативной памяти", "Рекомендуется выделить 6-8 гигабайт оперативной памяти, чем больше - тем лучше."),
+                    CoolExpansionPanel(8, "Настройки игры", "Чтобы настроить количество оперативной памяти или расположение файлов игры, зайдите на страницу сервера в лаунчере где находится кнопка \"играть\" и нажмите на кнопку настроект."),
+                    CoolExpansionPanel(9, "OpenGl error", "Чтобы отключить сообщение об ошибках OpenGL в игре откройте настройки и перейдите в Video Setting -> Other -> show OpenGl error."),
+                    CoolExpansionPanel(10, "Шейдеры", "Вместе с игрой идет пак предустановленных шейдеров доступных на видеокартах Nvidia и AMD, чтобы активировать их в игре зайите Video Setting -> Shaders."),
+                    CoolExpansionPanel(11, "Переустановка игры", "Чтобы переустановить игру откройте настройки в лаунчере, перейдите в директорию с файлами и удалите её. Лаунчер при входе автоматически скачает нужные файлы."),
+                    CoolExpansionPanel(12, "Как посмотреть крафт", "Чтобы узанть из чего крафтится предмает или что можно из него скрафтить, нажмите R и U соответсвенно, при наведении на предмет в инвентаре."),
+                    //CoolExpansionPanel(4, "", ""),
                   ],
                   expansionCallback: (i, isOpen) => setState(() {
                     _isPanelOpen[i] = !_isPanelOpen[i];
@@ -67,7 +77,7 @@ class HowToPlayState extends State<HowToPlay> {
       ),
     );
   }
-  ExpansionPanel CoolExpansionPanel(int num,String theme){
+  ExpansionPanel CoolExpansionPanel(int num,String theme,String mainText){
     return ExpansionPanel(
         backgroundColor: CoolColors.textColor,
         canTapOnHeader: true,
@@ -79,14 +89,8 @@ class HowToPlayState extends State<HowToPlay> {
                   color: Colors.black) ,));
         },
         body: FlatButton(
-          //color: Colors.pinkAccent,
           onPressed: () { _isPanelOpen[num] = false; setState(() {}); },
-          child: Text(
-              "1) Зарегайся/залогинся на сайте\n"
-                  "2) установи скин\n"
-                  "3) скачай лаунчер\n"
-                  "4) залогинся в лаунчере\n"
-                  "5) играй",
+          child: Text(mainText,
               style: GoogleFonts.roboto(
                   fontSize: 40.0,
                   color: Colors.black) //(fontSize: 40.0,color: CoolColors.textColor),

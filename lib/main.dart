@@ -18,7 +18,6 @@ import 'package:webviewx/webviewx.dart';
 import 'colors.dart';
 import 'pages/auth/auth.dart';
 
-
 //                           оно смотрит
 // ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
 // ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
@@ -77,34 +76,55 @@ class _HomePageState extends State<HomePage> {
   final controller = PageController(
     initialPage: 0,
   );
-  var isSelected = [true,false,false,false,false];
+  var isSelected = [true, false, false, false, false];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
         children: [
-          Container(child: ToggleButtons(
-            splashColor: CoolColors.upperButtonSelectedColor, // крута
-            fillColor: CoolColors.upperButtonSelectedColor,
-            focusColor: CoolColors.upperButtonSelectedColor,
-            selectedColor: CoolColors.upperButtonSelectedTextColor,//Colors.white,
-            borderWidth: 0,
-            children: <Widget>[
-              TopButton(isSelected,"Новости",Icons.fiber_new_sharp),
-              TopButton(isSelected,"Карта",Icons.map_sharp),
-              TopButton(isSelected,"Смотри Пута",Icons.remove_red_eye),
-              TopButton(isSelected,"Как играть?",Icons.help),
-              TopButton(isSelected,"Личный кабинет",Icons.account_circle_sharp),
-            ],
-            onPressed: (int index) {
-              setState(() {
-                controller.animateToPage(index, duration: const Duration(seconds: 1), curve: Curves.easeInOut);
-                isSelected = [false,false,false,false,false];
-                isSelected[index] = !isSelected[index];
-              });
-            },
-            isSelected: isSelected,
-          )),
+          Container(
+              decoration: const BoxDecoration(
+                  //borderRadius: BorderRadius.all(Radius.circular(20)),
+                  gradient: LinearGradient(
+                begin: Alignment.bottomLeft,
+                end: Alignment.topRight,
+                stops: [
+                  0.1,
+                  0.9,
+                ],
+                colors: [Colors.amber, Colors.pinkAccent],
+              )),
+              child: ToggleButtons(
+                renderBorder: false,
+                borderRadius: BorderRadius.circular(0),
+                borderColor: Colors.blue,
+                splashColor: CoolColors.upperButtonSelectedColor,
+                // крута
+                fillColor: CoolColors.upperButtonSelectedColor,
+                focusColor: CoolColors.upperButtonSelectedColor,
+                selectedColor: CoolColors.upperButtonSelectedTextColor,
+                //Colors.white,
+                borderWidth: 0,
+                children: <Widget>[
+                  TopButton(isSelected, "Новости", Icons.fiber_new_sharp, 0),
+                  TopButton(isSelected, "Карта", Icons.map_sharp, 1),
+                  TopButton(isSelected, "Смотри Пута", Icons.remove_red_eye, 2),
+                  TopButton(isSelected, "Как играть?", Icons.help, 3),
+                  TopButton(isSelected, "Личный кабинет",
+                      Icons.account_circle_sharp, 4),
+                ],
+                onPressed: (int index) {
+                  setState(() {
+                    controller.animateToPage(index,
+                        duration: const Duration(seconds: 1),
+                        curve: Curves.easeInOut);
+                    isSelected = [false, false, false, false, false];
+                    isSelected[index] = !isSelected[index];
+                  });
+                },
+                isSelected: isSelected,
+              )),
           Pages(controller),
           Expanded(
             flex: 1,
@@ -123,65 +143,86 @@ class _HomePageState extends State<HomePage> {
                     tileMode: TileMode.repeated,
                   ),
                 ),
-                child: const Center(child: Text("WORK IN PROGRESS",style: TextStyle(fontSize: 45,color: Colors.white),))),
-            ),
+                child: const Center(
+                    child: Text(
+                  "WORK IN PROGRESS",
+                  style: TextStyle(fontSize: 45, color: Colors.white),
+                ))),
+          ),
         ],
       ),
     );
   }
 }
 
-
-class TopButton extends StatelessWidget{
+class TopButton extends StatelessWidget {
   var isSelected;
   String text;
   IconData icon;
-  TopButton(this.isSelected,this.text,this.icon, {Key? key}) : super(key: key);
+  int num;
+
+  TopButton(this.isSelected, this.text, this.icon, this.num, {Key? key})
+      : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      //color: (isSelected[0]) ? CoolColors.upperButtonSelectedColor : CoolColors.upperButtonDeselectedColor,
-
-      child: SizedBox(
-          width: MediaQuery.of(context).size.width/isSelected.length,
+    return SizedBox(
+          width: MediaQuery.of(context).size.width / isSelected.length,
           height: 100,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(icon,color: CoolColors.textColor,),
-              Container(margin: const EdgeInsets.only(left: 5), child: Text(text, style: GoogleFonts.jost(fontSize: 25.0,color: CoolColors.textColor),)),
+              Icon(
+                icon,
+                color: (isSelected[num]) ? getButtonGradientColor(num) : Colors.black,
+              ),
+              Container(
+                  margin: const EdgeInsets.only(left: 5),
+                  child: Text(
+                    text,
+                    style: GoogleFonts.jost(
+                        fontSize: 25.0,
+                        color: (isSelected[num])
+                            ? getButtonGradientColor(num)
+                            : Colors.black),
+                  )),
             ],
-          )),
-    );
+          ));
+  }
+}
+Color getButtonGradientColor(int num){
+  switch(num){
+    case 0:
+      return const Color.fromARGB(255, 255, 191, 9);
+    case 1:
+      return const Color.fromARGB(255, 255, 157, 41);
+    case 2:
+      return const Color.fromARGB(255, 255, 125, 71);
+    case 3:
+      return const Color.fromARGB(255, 255, 93, 102);
+    case 4:
+      return Colors.pinkAccent;
+    default:
+      return Colors.white;
   }
 }
 
-class Pages extends StatelessWidget{
+class Pages extends StatelessWidget {
   late PageController controller;
+
   Pages(this.controller, {Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-
     final pageView = PageView(
       physics: NeverScrollableScrollPhysics(),
       //scrollBehavior: AppScrollBehavior(),
       controller: controller,
-      children:<Widget> [
-        News(),
-        WorldMap(),
-        WatchPoot(),
-        HowToPlay(),
-        Auth()
-      ],
+      children: <Widget>[News(), WorldMap(), WatchPoot(), HowToPlay(), Auth()],
     );
-    return Expanded(
-      flex: 9,
-      child: pageView
-    );
+    return Expanded(flex: 9, child: pageView);
   }
 }
-
-
 
 // на случай если понадобится скролить руками
 // https://stackoverflow.com/questions/69424933/flutter-pageview-not-swipeable-on-web-desktop-mode

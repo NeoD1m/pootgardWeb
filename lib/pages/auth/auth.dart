@@ -82,6 +82,8 @@ class AuthState extends State<Auth> {
 
   @override
   Widget build(BuildContext context) {
+    if(globals.user.username != "") return Profile();
+
     switch (state) {
       case authState.register:
         return Register(register: register, changeState: changeStateTo);
@@ -93,7 +95,7 @@ class AuthState extends State<Auth> {
       case authState.main:
         return Profile();
       case authState.lostPassword:
-        return LostPassword(changeStateTo);
+        return LostPassword(changeState: changeStateTo,);
     }
   }
 }
@@ -138,71 +140,75 @@ class Login extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: CoolColors.mainColor,
-      child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-        const Text("Логин", style: TextStyle(fontSize: 45, color: Colors.amber)),
-        InputField(
-          usernameController,
-          "Username",
-          const EdgeInsets.only(top: 30),
-          obscure: false,
-          characterLimit: 32,
-        ),
-        InputField(
-          passwdController,
-          "Password",
-          const EdgeInsets.only(top: 30),
-          obscure: true,
-          characterLimit: 32,
-        ),
-        Container(
-          margin: const EdgeInsets.only(bottom: 10, top: 10, right: 25),
-          //height: 20,
-          width: 500,
-          child: Align(
-            alignment: Alignment.centerRight,
-            child: TextButton(
-              onPressed: () {
-                changeState(authState.register);
-              },
-              child: const Text("У меня нет аккаунта",
-                  style: TextStyle(color: CoolColors.textColor)),
+      child: Center(
+        child: SingleChildScrollView(
+          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+            const Text("Логин", style: TextStyle(fontSize: 45, color: Colors.amber)),
+            InputField(
+              usernameController,
+              "Username",
+              const EdgeInsets.only(top: 30),
+              obscure: false,
+              characterLimit: 32,
             ),
-          ),
-        ),
-        Container(
-          margin: const EdgeInsets.only(bottom: 30, right: 25),
-          //height: 20,
-          width: 500,
-          child: Align(
-            alignment: Alignment.centerRight,
-            child: TextButton(
-              onPressed: () {
-                changeState(authState.lostPassword);
-              },
-              child: Text("Я забыл пароль",
-                  style: TextStyle(color: CoolColors.textColor)),
+            InputField(
+              passwdController,
+              "Password",
+              const EdgeInsets.only(top: 30),
+              obscure: true,
+              characterLimit: 32,
             ),
-          ),
+            Container(
+              margin: const EdgeInsets.only(bottom: 10, top: 10, right: 25),
+              //height: 20,
+              width: 500,
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: TextButton(
+                  onPressed: () {
+                    changeState(authState.register);
+                  },
+                  child: const Text("У меня нет аккаунта",
+                      style: TextStyle(color: CoolColors.textColor)),
+                ),
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.only(bottom: 30, right: 25),
+              //height: 20,
+              width: 500,
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: TextButton(
+                  onPressed: () {
+                    changeState(authState.lostPassword);
+                  },
+                  child: Text("Я забыл пароль",
+                      style: TextStyle(color: CoolColors.textColor)),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 50,
+              width: 300,
+              child: ElevatedButton(
+                  style: TextButton.styleFrom(
+                      primary: CoolColors.buttonTextColor,
+                      backgroundColor: CoolColors.buttonColor // Text Color
+                      ),
+                  onPressed: () {
+                    globals.user.setName(usernameController.text);
+                    globals.user.setPassword(passwdController.text);
+                    login(globals.user);
+                  },
+                  child: const Text(
+                    "Войти",
+                    style: TextStyle(fontSize: 20),
+                  )),
+            )
+          ]),
         ),
-        SizedBox(
-          height: 50,
-          width: 300,
-          child: ElevatedButton(
-              style: TextButton.styleFrom(
-                  primary: CoolColors.buttonTextColor,
-                  backgroundColor: CoolColors.buttonColor // Text Color
-                  ),
-              onPressed: () {
-                globals.user.setName(usernameController.text);
-                globals.user.setPassword(passwdController.text);
-                login(globals.user);
-              },
-              child: const Text(
-                "Войти",
-                style: TextStyle(fontSize: 20),
-              )),
-        )
-      ]),
+      ),
     );
   }
 }
@@ -227,90 +233,89 @@ class Register extends StatelessWidget {
     return Container(
       color: Colors.black,
       child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text("Регистрация",
-                style: TextStyle(fontSize: 45, color: CoolColors.textColor)),
-            InputField(
-              usernameController,
-              "Username",
-              const EdgeInsets.only(top: 30),
-              obscure: false,
-              characterLimit: 20,
-            ),
-            InputField(
-              emailController,
-              "Email",
-              const EdgeInsets.only(top: 30),
-              obscure: false,
-              characterLimit: 50,
-            ),
-            InputField(
-              passwdController,
-              "Password",
-              const EdgeInsets.only(top: 30),
-              obscure: true,
-              characterLimit: 32,
-            ),
-            InputField(
-              repeatPasswdController,
-              "Repeat Password",
-              const EdgeInsets.only(top: 30, bottom: 5),
-              obscure: true,
-              characterLimit: 32,
-            ),
-            InputField(
-              secretCodeController,
-              "Secret Code",
-              const EdgeInsets.only(top: 30, bottom: 5),
-              obscure: true,
-              characterLimit: 32,
-            ),
-            Container(
-              margin: const EdgeInsets.only(bottom: 30, right: 25),
-              height: 50,
-              width: 500,
-              child: Align(
-                alignment: Alignment.centerRight,
-                child: TextButton(
-                  onPressed: () {
-                    changeState(authState.login);
-                  },
-                  child: const Text(
-                    "У меня уже есть аккаунт",
-                    style: TextStyle(color: CoolColors.textColor),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text("Регистрация",
+                  style: TextStyle(fontSize: 45, color: CoolColors.textColor)),
+              InputField(
+                usernameController,
+                "Username",
+                const EdgeInsets.only(top: 30),
+                obscure: false,
+                characterLimit: 20,
+              ),
+              InputField(
+                emailController,
+                "Email",
+                const EdgeInsets.only(top: 30),
+                obscure: false,
+                characterLimit: 50,
+              ),
+              InputField(
+                passwdController,
+                "Password",
+                const EdgeInsets.only(top: 30),
+                obscure: true,
+                characterLimit: 32,
+              ),
+              InputField(
+                repeatPasswdController,
+                "Repeat Password",
+                const EdgeInsets.only(top: 30, bottom: 5),
+                obscure: true,
+                characterLimit: 32,
+              ),
+              InputField(
+                secretCodeController,
+                "Secret Code",
+                const EdgeInsets.only(top: 30, bottom: 5),
+                obscure: true,
+                characterLimit: 32,
+              ),
+              Container(
+                margin: const EdgeInsets.only(bottom: 30, right: 25),
+                height: 50,
+                width: 500,
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: TextButton(
+                    onPressed: () {
+                      changeState(authState.login);
+                    },
+                    child: const Text(
+                      "У меня уже есть аккаунт",
+                      style: TextStyle(color: CoolColors.textColor),
+                    ),
                   ),
                 ),
               ),
-            ),
-            SizedBox(
-              height: 50,
-              width: 300,
-              child: ElevatedButton(
-                  style: TextButton.styleFrom(
-                      primary: CoolColors.buttonTextColor,
-                      backgroundColor: CoolColors.buttonColor // Text Color
-                      ),
-                  onPressed: () {
-                    /// check code
-                    /// if valid delete from db and let user in
-                    /// else say code is incorrect
-                    userReg(
-                        context,
-                        usernameController,
-                        emailController,
-                        passwdController,
-                        repeatPasswdController,
-                        secretCodeController,
-                        register);
-                  },
-                  child: const Text(
-                    "Войти",
-                    style: TextStyle(fontSize: 20),
-                  )),
-            )
-          ],
+              SizedBox(
+                height: 50,
+                width: 300,
+                child: ElevatedButton(
+                    style: TextButton.styleFrom(
+                        primary: CoolColors.buttonTextColor,
+                        backgroundColor: CoolColors.buttonColor // Text Color
+                        ),
+                    onPressed: () {
+                      userReg(
+                          context,
+                          usernameController,
+                          emailController,
+                          passwdController,
+                          repeatPasswdController,
+                          secretCodeController,
+                          register);
+                    },
+                    child: const Text(
+                      "Войти",
+                      style: TextStyle(fontSize: 20),
+                    )),
+              )
+            ],
+          ),
         ),
       ),
     );

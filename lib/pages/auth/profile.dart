@@ -36,11 +36,8 @@ class ProfileState extends State<Profile> {
   String errMessage = 'Error Uploading Image';
   late WebViewXController webViewController;
 
-
-
   @override
   Widget build(BuildContext context) {
-
     return FutureBuilder(
       future: getData(),
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
