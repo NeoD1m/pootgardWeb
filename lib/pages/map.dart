@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
-import 'package:pootgard_web/colors.dart';
 import 'package:webviewx/webviewx.dart';
+
+import '../colors.dart';
 
 class WorldMap extends StatelessWidget{
   late WebViewXController webViewController;

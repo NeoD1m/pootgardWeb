@@ -4,7 +4,8 @@ import 'dart:html';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:pootgard_web/colors.dart';
+
+import '../colors.dart';
 
 class HowToPlay extends StatefulWidget {
   @override
@@ -67,7 +68,6 @@ class HowToPlayState extends State<HowToPlay> {
     );
   }
   ExpansionPanel CoolExpansionPanel(int num,String theme){
-
     return ExpansionPanel(
         backgroundColor: CoolColors.textColor,
         canTapOnHeader: true,
@@ -80,9 +80,7 @@ class HowToPlayState extends State<HowToPlay> {
         },
         body: FlatButton(
           //color: Colors.pinkAccent,
-          onPressed: () { _isPanelOpen[num] = false; setState(() {
-
-          }); },
+          onPressed: () { _isPanelOpen[num] = false; setState(() {}); },
           child: Text(
               "1) Зарегайся/залогинся на сайте\n"
                   "2) установи скин\n"

@@ -1,15 +1,14 @@
 import 'dart:convert';
 import 'dart:html';
 import 'dart:typed_data';
+import 'package:Pootgard/pages/auth/profile.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:pootgard_web/colors.dart';
-import 'package:pootgard_web/pages/auth/profile.dart';
-import 'package:pootgard_web/user.dart';
 import 'package:crypto/crypto.dart';
-import 'package:pootgard_web/userCubit.dart';
+import '../../colors.dart';
+import '../../user.dart';
 import '../authState.dart';
 import '../../globals.dart' as globals;
 import 'package:image_picker_web/image_picker_web.dart';
@@ -140,7 +139,7 @@ class Login extends StatelessWidget {
     return Container(
       color: CoolColors.mainColor,
       child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-        Text("Логин", style: TextStyle(fontSize: 45, color: Colors.amber)),
+        const Text("Логин", style: TextStyle(fontSize: 45, color: Colors.amber)),
         InputField(
           usernameController,
           "Username",
@@ -278,7 +277,7 @@ class Register extends StatelessWidget {
                   onPressed: () {
                     changeState(authState.login);
                   },
-                  child: Text(
+                  child: const Text(
                     "У меня уже есть аккаунт",
                     style: TextStyle(color: CoolColors.textColor),
                   ),

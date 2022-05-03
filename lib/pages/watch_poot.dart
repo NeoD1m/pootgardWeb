@@ -1,9 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:pootgard_web/colors.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:webviewx/webviewx.dart';
+
+import '../colors.dart';
 
 class WatchPoot extends StatelessWidget{
   //final String _markdownData = "<span style='color: red;'># Наш покровитель\n## Сервер создан при поддержке Дмитрия MightyPoot, залейтайте на его [стримы](https://www.twitch.tv/mightypoot)</span>";

@@ -1,21 +1,21 @@
 import 'dart:html';
 import 'dart:ui';
 
+import 'package:Pootgard/pages/how_to_play.dart';
+import 'package:Pootgard/pages/map.dart';
+import 'package:Pootgard/pages/news.dart';
+import 'package:Pootgard/pages/watch_poot.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:pootgard_web/globals.dart' as globals;
+import 'package:Pootgard/globals.dart' as globals;
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:pootgard_web/colors.dart';
-import 'package:pootgard_web/pages/how_to_play.dart';
-import 'package:pootgard_web/pages/map.dart';
-import 'package:pootgard_web/pages/news.dart';
-import 'package:pootgard_web/pages/watch_poot.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'dart:ui' as ui;
 
 import 'package:webviewx/webviewx.dart';
 
+import 'colors.dart';
 import 'pages/auth/auth.dart';
 
 
