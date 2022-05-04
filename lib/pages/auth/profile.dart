@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:html';
 
+import 'package:Pootgard/colors.dart';
 import 'package:flutter/services.dart';
 import 'package:universal_html/html.dart' as html;
 
@@ -20,14 +21,15 @@ class Profile extends StatefulWidget {
   @override
   State<Profile> createState() => ProfileState();
 }
+
 String username = "";
 String email = "";
-
 
 Future<void> getData() async {
   username = await getUserName(globals.user.username);
   email = await getUserEmail(globals.user.username);
 }
+
 class ProfileState extends State<Profile> {
   late Future<File> file;
   String status = '';
@@ -41,50 +43,76 @@ class ProfileState extends State<Profile> {
     return FutureBuilder(
       future: getData(),
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-        return Center(
-          child: Column(
-            children: [
-              Text(
-                "YOUR NAME IS $username",
-                style: TextStyle(fontSize: 40),
-              ),
-              Text(
-                "YOUR EMAIL IS $email",
-                style: TextStyle(fontSize: 30),
-              ),
-              Container(
-                width: 300,
-                height: 500,
-                child: WebViewX(
-                    height: double.maxFinite,
-                    width: double.maxFinite,
-                    initialSourceType: SourceType.html,
-                    onWebViewCreated: (controller) => {
-                      webViewController = controller,
-                      webViewController.loadContent(
-                        'https://skins.pootgard.fun/skinviewer/Minecraft-SkinViewer-master/index.php?name=$username',
-                        SourceType.url,
+        if (snapshot.connectionState == ConnectionState.done) {
+          return Container(
+            color: Colors.black,
+            child: Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                    width: 300,
+                    height: 500,
+                    child: WebViewX(
+                        height: double.maxFinite,
+                        width: double.maxFinite,
+                        initialSourceType: SourceType.html,
+                        onWebViewCreated: (controller) => {
+                          webViewController = controller,
+                          webViewController.loadContent(
+                            'https://skins.pootgard.fun/skinviewer/Minecraft-SkinViewer-master/index.php?name=$username',
+                            SourceType.url,
+                          )
+                        }),
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Привет, $username",
+                        style: TextStyle(fontSize: 40,color: CoolColors.textColor),
+                      ),
+                      Text(
+                        "Email: $email",
+                        style: TextStyle(fontSize: 30,color: CoolColors.textColor),
+                      ),
+                      SizedBox(
+                        height: 50,
+                        width: 300,
+                        child: ElevatedButton(
+                            style: TextButton.styleFrom(
+                                primary: CoolColors.buttonTextColor,
+                                backgroundColor: CoolColors.buttonColor // Text Color
+                            ),
+                            onPressed: () {
+                              uploadSkin(context, username,webViewController);
+                            },
+                            child: const Text(
+                              "Загрузить скин",
+                              style: TextStyle(fontSize: 20),
+                            )),
                       )
-                    }),
+                    ],
+                  ),
+                ],
               ),
-              FlatButton(
-                  onPressed: () {
-                    uploadFile(context,username);
-                    setState(() {});
-                  },
-                  child: Text("Upload skin")),
-              FlatButton(onPressed: () {
-                (context as Element).reassemble();
-                setState((){});
-                    } , child: Text("обновить"))
-            ],
-          ),
-        );
+            ),
+          );
+        } else {
+          return Container(
+              color: Colors.black,
+              child: Center(
+                  child: const CircularProgressIndicator(
+                color: Colors.amber,
+              )));
+        }
       },
     );
   }
-
 }
+
 Future<String> getUserName(String username) async {
   var apiUrl = "https://auth.pootgard.fun/getUserName.php";
   var response = await http.post(
@@ -99,6 +127,7 @@ Future<String> getUserName(String username) async {
   }
   return data;
 }
+
 Future<String> getUserEmail(String username) async {
   var apiUrl = "https://auth.pootgard.fun/getUserEmail.php";
   var response = await http.post(

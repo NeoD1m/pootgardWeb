@@ -137,8 +137,8 @@ class _HomePageState extends State<HomePage> {
                     colors: [
                       Colors.black,
                       Colors.black,
-                      Colors.orange,
-                      Colors.orange,
+                      const Color.fromARGB(255, 255, 93, 102),
+                      const Color.fromARGB(255, 255, 93, 102),
                     ],
                     tileMode: TileMode.repeated,
                   ),
@@ -167,31 +167,34 @@ class TopButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-          width: MediaQuery.of(context).size.width / isSelected.length,
-          height: 100,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                icon,
-                color: (isSelected[num]) ? getButtonGradientColor(num) : Colors.black,
-              ),
-              Container(
-                  margin: const EdgeInsets.only(left: 5),
-                  child: Text(
-                    text,
-                    style: GoogleFonts.jost(
-                        fontSize: 25.0,
-                        color: (isSelected[num])
-                            ? getButtonGradientColor(num)
-                            : Colors.black),
-                  )),
-            ],
-          ));
+        width: MediaQuery.of(context).size.width / isSelected.length,
+        height: 100,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              icon,
+              color: (isSelected[num])
+                  ? getButtonGradientColor(num)
+                  : Colors.black,
+            ),
+            Container(
+                margin: const EdgeInsets.only(left: 5),
+                child: Text(
+                  text,
+                  style: GoogleFonts.jost(
+                      fontSize: 25.0,
+                      color: (isSelected[num])
+                          ? getButtonGradientColor(num)
+                          : Colors.black),
+                )),
+          ],
+        ));
   }
 }
-Color getButtonGradientColor(int num){
-  switch(num){
+
+Color getButtonGradientColor(int num) {
+  switch (num) {
     case 0:
       return const Color.fromARGB(255, 255, 191, 9);
     case 1:

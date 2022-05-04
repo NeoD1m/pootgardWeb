@@ -1,18 +1,16 @@
 import 'dart:convert';
-import 'dart:html';
 import 'dart:typed_data';
+import 'package:Pootgard/pages/CoolWidgets.dart';
 import 'package:Pootgard/pages/auth/profile.dart';
-import 'package:http_parser/http_parser.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:crypto/crypto.dart';
+import 'package:webviewx/webviewx.dart';
 import '../../colors.dart';
 import '../../user.dart';
 import '../authState.dart';
 import '../../globals.dart' as globals;
-import 'package:image_picker_web/image_picker_web.dart';
-import 'package:gradient_textfield/gradient_textfield.dart';
 import 'lost_password.dart';
 
 class Auth extends StatefulWidget {
@@ -32,14 +30,11 @@ class AuthState extends State<Auth> {
       "username": user.username,
       "password": securePassword,
     });
-    //print(response.body);
     var data = json.decode(response.body);
-    //print(data.toString());
     if (data == "Success") {
       print("\n\nSUCCESSFUL LOGIN, NICE :)");
       globals.user.setName(user.username);
       changeStateTo(authState.main);
-      //Navigator.push(context, MaterialPageRoute(builder: (context)=>DashBoard(),),);
     } else {
       showDialog(
           context: context,
@@ -100,7 +95,7 @@ class AuthState extends State<Auth> {
   }
 }
 
-Future<void> uploadFile(BuildContext context, String username) async {
+Future<void> uploadSkin(BuildContext context, String username,WebViewXController webViewController) async {
   FilePickerResult? result = await FilePicker.platform.pickFiles(
     type: FileType.custom,
     allowedExtensions: ['png'],
@@ -122,6 +117,7 @@ Future<void> uploadFile(BuildContext context, String username) async {
               title: Text("Успех"),
               content: Text("Вы успешно сменили скин"),
             ));
+    webViewController.reload();
   }
 }
 
@@ -183,7 +179,7 @@ class Login extends StatelessWidget {
                   onPressed: () {
                     changeState(authState.lostPassword);
                   },
-                  child: Text("Я забыл пароль",
+                  child: const Text("Я забыл пароль",
                       style: TextStyle(color: CoolColors.textColor)),
                 ),
               ),
@@ -237,7 +233,7 @@ class Register extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text("Регистрация",
+              const Text("Регистрация",
                   style: TextStyle(fontSize: 45, color: CoolColors.textColor)),
               InputField(
                 usernameController,
@@ -347,12 +343,7 @@ Future<String> userReg(
     TextEditingController secretCodeController,
     Function register) async {
   if (!globals.isAuthOn) {
-    showDialog(
-        context: context,
-        builder: (context) => const AlertDialog(
-              title: Text("Ошибка"),
-              content: Text("Регистрация закрыта"),
-            ));
+    showCoolDialog(context, "Ошибка", "Регистрация закрыта");
     return "Error";
   }
 
@@ -361,34 +352,24 @@ Future<String> userReg(
       passwdController.text.isEmpty ||
       repeatPasswdController.text.isEmpty ||
       secretCodeController.text.isEmpty) {
-    showDialog(
-        context: context,
-        builder: (context) => const AlertDialog(
-              title: Text("Ошибка"),
-              content: Text("Не все поля заполнены"),
-            ));
+    showCoolDialog(context, "Ошибка", "Не все поля заполнены");
     return "Error";
   }
 
   if (passwdController.text != repeatPasswdController.text) {
-    showDialog(
-        context: context,
-        builder: (context) => const AlertDialog(
-              title: Text("Ошибка"),
-              content: Text("Пароли не совпадают"),
-            ));
+    showCoolDialog(context, "Ошибка", "Пароли не совпадают");
+    return "Error";
+  }
+
+  if(usernameController.text.contains(" ")){
+    showCoolDialog(context, "Ошибка", "Использовать пробелы в имени запрещено");
     return "Error";
   }
 
   bool isCodeValid = await isSecretCodeValid(secretCodeController.text);
 
   if (!isCodeValid) {
-    showDialog(
-        context: context,
-        builder: (context) => const AlertDialog(
-              title: Text("Ошибка"),
-              content: Text("Неверный секретный код"),
-            ));
+    showCoolDialog(context, "Ошибка", "Неверный секретный код");
     return "Error";
   }
 
@@ -400,60 +381,7 @@ Future<String> userReg(
   return "Success";
 }
 
-class InputField extends StatelessWidget {
-  final TextEditingController _controller;
-  final String hint;
-  final bool obscure;
-  final EdgeInsets margins;
-  final int characterLimit;
 
-  const InputField(this._controller, this.hint, this.margins,
-      {Key? key, required this.characterLimit, required this.obscure})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: margins,
-      width: 500,
-      height: 50,
-      child: Stack(
-        children: [
-          Container(
-              decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(20)),
-                  gradient: LinearGradient(
-                    begin: Alignment.bottomLeft,
-                    end: Alignment.topRight,
-                    stops: [
-                      0.1,
-                      0.9,
-                    ],
-                    colors: [Colors.amber, Colors.pinkAccent],
-                  ))),
-          TextField(
-            cursorColor: Colors.pink,
-            style: const TextStyle(color: Colors.black),
-            maxLength: characterLimit,
-            obscureText: obscure,
-            controller: _controller,
-            decoration: InputDecoration(
-              border: const OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(20))),
-              focusColor: Colors.red,
-              focusedBorder: const OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(20)),
-                  borderSide: BorderSide(color: Colors.pink,width: 2)),
-              filled: true,
-              hintText: hint,
-              counterText: "",
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
 
 // headers: {
 // //"Access-Control-Allow-Origin": "*", // Required for CORS support to work

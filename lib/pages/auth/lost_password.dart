@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../colors.dart';
+import '../CoolWidgets.dart';
 import '../authState.dart';
 import 'auth.dart';
 class LostPassword extends StatelessWidget{
