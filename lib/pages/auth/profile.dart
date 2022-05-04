@@ -70,6 +70,7 @@ class ProfileState extends State<Profile> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
+                      /// приветствовать по времени суток
                       Text(
                         "Привет, $username",
                         style: TextStyle(fontSize: 40,color: CoolColors.textColor),
@@ -93,7 +94,27 @@ class ProfileState extends State<Profile> {
                               "Загрузить скин",
                               style: TextStyle(fontSize: 20),
                             )),
-                      )
+                      ),
+                      // SizedBox(
+                      //   height: 50,
+                      //   width: 300,
+                      //   child: TextButton(
+                      //       style: TextButton.styleFrom(
+                      //           primary: CoolColors.textColor,
+                      //           //backgroundColor: CoolColors.buttonColor // Text Color
+                      //       ),
+                      //       onPressed: () {
+                      //         username = "";
+                      //         globals.user = User(email: "", username: "", password: "");
+                      //         setState(() {
+                      //
+                      //         });
+                      //       },
+                      //       child: const Text(
+                      //         "Выйти из аккаунта",
+                      //         style: TextStyle(fontSize: 20),
+                      //       )),
+                      // )
                     ],
                   ),
                 ],

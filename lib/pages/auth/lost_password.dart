@@ -9,7 +9,12 @@ class LostPassword extends StatelessWidget{
   LostPassword({Key? key, required this.changeState})
       : super(key: key);
   final TextEditingController emailController = TextEditingController();
-
+  final List<FocusNode> nodes = [FocusNode(canRequestFocus: true),FocusNode()];
+  void focus(int num){
+    if (nodes.length >= num+1){
+      nodes[num+1].requestFocus();
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -22,6 +27,9 @@ class LostPassword extends StatelessWidget{
           const EdgeInsets.only(top: 30),
           obscure: false,
           characterLimit: 32,
+          nodes: nodes,
+          focus: focus,
+          positionInNodes: 0,
         ),
         Container(
           margin: const EdgeInsets.only(top: 10, bottom: 30, right: 25),
@@ -33,7 +41,7 @@ class LostPassword extends StatelessWidget{
               onPressed: () {
                 changeState(authState.login);
               },
-              child: Text("Я вспомнил пароль",
+              child: const Text("Я вспомнил пароль",
                   style: TextStyle(color: CoolColors.textColor)),
             ),
           ),
@@ -42,6 +50,7 @@ class LostPassword extends StatelessWidget{
           height: 50,
           width: 300,
           child: ElevatedButton(
+            focusNode: nodes[1],
               style: TextButton.styleFrom(
                   primary: CoolColors.buttonTextColor,
                   backgroundColor: Colors.grey // Text Color

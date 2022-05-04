@@ -18,9 +18,11 @@ class InputField extends StatelessWidget {
   final bool obscure;
   final EdgeInsets margins;
   final int characterLimit;
-
+  final Function focus;
+  final int positionInNodes;
+  final List<FocusNode> nodes;
   const InputField(this._controller, this.hint, this.margins,
-      {Key? key, required this.characterLimit, required this.obscure})
+      {Key? key, required this.characterLimit, required this.obscure, required this.focus, required this.positionInNodes, required this.nodes})
       : super(key: key);
 
   @override
@@ -44,6 +46,12 @@ class InputField extends StatelessWidget {
                     colors: [Colors.amber, Colors.pinkAccent],
                   ))),
           TextField(
+            focusNode: nodes[positionInNodes],
+            onSubmitted: (sub) {
+              /// change focus to next node
+              focus(positionInNodes);
+            },
+            autofocus: (positionInNodes == 0) ? true : false,
             cursorColor: Colors.pink,
             style: const TextStyle(color: Colors.black),
             maxLength: characterLimit,

@@ -125,13 +125,16 @@ class Login extends StatelessWidget {
   final Function login;
   final Function changeState;
 
-  //User user;
-
   Login({Key? key, required this.changeState, required this.login})
       : super(key: key);
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwdController = TextEditingController();
-
+  final List<FocusNode> nodes = [FocusNode(canRequestFocus: true),FocusNode(canRequestFocus: true),FocusNode()];
+  void focus(int num){
+    if (nodes.length >= num+1){
+      nodes[num+1].requestFocus();
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -146,6 +149,9 @@ class Login extends StatelessWidget {
               const EdgeInsets.only(top: 30),
               obscure: false,
               characterLimit: 32,
+              nodes: nodes,
+              focus: focus,
+              positionInNodes: 0,
             ),
             InputField(
               passwdController,
@@ -153,6 +159,9 @@ class Login extends StatelessWidget {
               const EdgeInsets.only(top: 30),
               obscure: true,
               characterLimit: 32,
+              nodes: nodes,
+              focus: focus,
+              positionInNodes: 1,
             ),
             Container(
               margin: const EdgeInsets.only(bottom: 10, top: 10, right: 25),
@@ -188,6 +197,7 @@ class Login extends StatelessWidget {
               height: 50,
               width: 300,
               child: ElevatedButton(
+                  focusNode: nodes[2],
                   style: TextButton.styleFrom(
                       primary: CoolColors.buttonTextColor,
                       backgroundColor: CoolColors.buttonColor // Text Color
@@ -220,10 +230,15 @@ class Register extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwdController = TextEditingController();
   final TextEditingController repeatPasswdController = TextEditingController();
+  final List<FocusNode> nodes = [FocusNode(canRequestFocus: true),FocusNode(canRequestFocus: true),FocusNode(canRequestFocus: true),FocusNode(canRequestFocus: true),FocusNode()];
 
   /// BETA
-  final TextEditingController secretCodeController = TextEditingController();
-
+  //final TextEditingController secretCodeController = TextEditingController();
+  void focus(int num){
+    if (nodes.length >= num+1){
+      nodes[num+1].requestFocus();
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -241,6 +256,9 @@ class Register extends StatelessWidget {
                 const EdgeInsets.only(top: 30),
                 obscure: false,
                 characterLimit: 20,
+                nodes: nodes,
+                focus: focus,
+                positionInNodes: 0,
               ),
               InputField(
                 emailController,
@@ -248,6 +266,9 @@ class Register extends StatelessWidget {
                 const EdgeInsets.only(top: 30),
                 obscure: false,
                 characterLimit: 50,
+                nodes: nodes,
+                focus: focus,
+                positionInNodes: 1,
               ),
               InputField(
                 passwdController,
@@ -255,6 +276,9 @@ class Register extends StatelessWidget {
                 const EdgeInsets.only(top: 30),
                 obscure: true,
                 characterLimit: 32,
+                nodes: nodes,
+                focus: focus,
+                positionInNodes: 2,
               ),
               InputField(
                 repeatPasswdController,
@@ -262,14 +286,20 @@ class Register extends StatelessWidget {
                 const EdgeInsets.only(top: 30, bottom: 5),
                 obscure: true,
                 characterLimit: 32,
+                nodes: nodes,
+                focus: focus,
+                positionInNodes: 3,
               ),
-              InputField(
-                secretCodeController,
-                "Secret Code",
-                const EdgeInsets.only(top: 30, bottom: 5),
-                obscure: true,
-                characterLimit: 32,
-              ),
+              // InputField(
+              //   secretCodeController,
+              //   "Secret Code",
+              //   const EdgeInsets.only(top: 30, bottom: 5),
+              //   obscure: true,
+              //   characterLimit: 32,
+              //   nodes: nodes,
+              //   focus: focus,
+              //   positionInNodes: 4,
+              // ),
               Container(
                 margin: const EdgeInsets.only(bottom: 30, right: 25),
                 height: 50,
@@ -291,6 +321,7 @@ class Register extends StatelessWidget {
                 height: 50,
                 width: 300,
                 child: ElevatedButton(
+                    focusNode: nodes[4],
                     style: TextButton.styleFrom(
                         primary: CoolColors.buttonTextColor,
                         backgroundColor: CoolColors.buttonColor // Text Color
@@ -302,7 +333,7 @@ class Register extends StatelessWidget {
                           emailController,
                           passwdController,
                           repeatPasswdController,
-                          secretCodeController,
+                          //secretCodeController,
                           register);
                     },
                     child: const Text(
@@ -340,7 +371,7 @@ Future<String> userReg(
     TextEditingController emailController,
     TextEditingController passwdController,
     TextEditingController repeatPasswdController,
-    TextEditingController secretCodeController,
+    //TextEditingController secretCodeController,
     Function register) async {
   if (!globals.isAuthOn) {
     showCoolDialog(context, "Ошибка", "Регистрация закрыта");
@@ -350,8 +381,7 @@ Future<String> userReg(
   if (usernameController.text.isEmpty ||
       emailController.text.isEmpty ||
       passwdController.text.isEmpty ||
-      repeatPasswdController.text.isEmpty ||
-      secretCodeController.text.isEmpty) {
+      repeatPasswdController.text.isEmpty) {
     showCoolDialog(context, "Ошибка", "Не все поля заполнены");
     return "Error";
   }
@@ -366,12 +396,12 @@ Future<String> userReg(
     return "Error";
   }
 
-  bool isCodeValid = await isSecretCodeValid(secretCodeController.text);
-
-  if (!isCodeValid) {
-    showCoolDialog(context, "Ошибка", "Неверный секретный код");
-    return "Error";
-  }
+  // bool isCodeValid = await isSecretCodeValid(secretCodeController.text);
+  //
+  // if (!isCodeValid) {
+  //   showCoolDialog(context, "Ошибка", "Неверный секретный код");
+  //   return "Error";
+  // }
 
   globals.user.setName(usernameController.text);
   globals.user.setPassword(passwdController.text);
