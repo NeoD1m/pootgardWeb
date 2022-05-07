@@ -26,6 +26,7 @@ class LostPassword extends StatelessWidget{
           "Email",
           const EdgeInsets.only(top: 30),
           obscure: false,
+          onlyAllowEnd: false,
           characterLimit: 32,
           nodes: nodes,
           focus: focus,

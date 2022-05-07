@@ -22,9 +22,11 @@ class InputField extends StatelessWidget {
   final Function focus;
   final int positionInNodes;
   final List<FocusNode> nodes;
+  final bool onlyAllowEnd;
 
   const InputField(this._controller, this.hint, this.margins,
       {Key? key,
+      required this.onlyAllowEnd,
       required this.characterLimit,
       required this.obscure,
       required this.focus,
@@ -52,33 +54,58 @@ class InputField extends StatelessWidget {
                     ],
                     colors: [Colors.amber, Colors.pinkAccent],
                   ))),
-          TextField(
-            inputFormatters: [
-              FilteringTextInputFormatter.allow(RegExp("[a-zA-Z]"))
-            ],
-            focusNode: nodes[positionInNodes],
-            onSubmitted: (sub) {
-              /// change focus to next node
-              focus(positionInNodes);
-            },
-            autofocus: (positionInNodes == 0) ? true : false,
-            cursorColor: Colors.pink,
-            style: const TextStyle(color: Colors.black),
-            maxLength: characterLimit,
-            obscureText: obscure,
-            controller: _controller,
-            decoration: InputDecoration(
-              border: const OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(20))),
-              focusColor: Colors.red,
-              focusedBorder: const OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(20)),
-                  borderSide: BorderSide(color: Colors.pink, width: 2)),
-              filled: true,
-              hintText: hint,
-              counterText: "",
-            ),
-          ),
+          (onlyAllowEnd)
+              ? TextField(
+                  inputFormatters: [
+                    FilteringTextInputFormatter.deny(RegExp("[А-Яа-я]"))
+                  ],
+                  focusNode: nodes[positionInNodes],
+                  onSubmitted: (sub) {
+                    /// change focus to next node
+                    focus(positionInNodes);
+                  },
+                  autofocus: (positionInNodes == 0) ? true : false,
+                  cursorColor: Colors.pink,
+                  style: const TextStyle(color: Colors.black),
+                  maxLength: characterLimit,
+                  obscureText: obscure,
+                  controller: _controller,
+                  decoration: InputDecoration(
+                    border: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(20))),
+                    focusColor: Colors.red,
+                    focusedBorder: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                        borderSide: BorderSide(color: Colors.pink, width: 2)),
+                    filled: true,
+                    hintText: hint,
+                    counterText: "",
+                  ),
+                )
+              : TextField(
+                  focusNode: nodes[positionInNodes],
+                  onSubmitted: (sub) {
+                    /// change focus to next node
+                    focus(positionInNodes);
+                  },
+                  autofocus: (positionInNodes == 0) ? true : false,
+                  cursorColor: Colors.pink,
+                  style: const TextStyle(color: Colors.black),
+                  maxLength: characterLimit,
+                  obscureText: obscure,
+                  controller: _controller,
+                  decoration: InputDecoration(
+                    border: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(20))),
+                    focusColor: Colors.red,
+                    focusedBorder: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                        borderSide: BorderSide(color: Colors.pink, width: 2)),
+                    filled: true,
+                    hintText: hint,
+                    counterText: "",
+                  ),
+                ),
         ],
       ),
     );
