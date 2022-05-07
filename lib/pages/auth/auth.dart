@@ -32,15 +32,10 @@ class AuthState extends State<Auth> {
     });
     var data = json.decode(response.body);
     if (data == "Success") {
-      print("\n\nSUCCESSFUL LOGIN, NICE :)");
       globals.user.setName(user.username);
       changeStateTo(authState.main);
     } else {
-      showDialog(
-          context: context,
-          builder: (context) => const AlertDialog(
-              title: Text("Ошибка"), content: Text("Неверное имя или пароль")));
-      print("\n\nERROR: WRONG PASSWORD OR USERNAME YOU IDIOT");
+      showCoolDialog(context, "Ошибка", "Неверное имя или пароль");
     }
   }
 
@@ -57,20 +52,13 @@ class AuthState extends State<Auth> {
     );
     var data = json.decode(response.body);
     if (data == "Error") {
-      showDialog(
-          context: context,
-          builder: (context) => const AlertDialog(
-              title: Text("Ошибка"),
-              content: Text("Аккаунт с таким именем уже существует")));
-      print("\n\nERROR MUDAK\nUSER ALREADY EXISTS: ${user.username}");
+      showCoolDialog(context, "Ошибка", "Аккаунт с таким именем уже существует");
     } else {
       changeStateTo(authState.main);
-      print("\n\nSUCCESS\nUSER ADDED: ${user.username}");
     }
   }
 
   void changeStateTo(authState change) {
-    print("STATE CHANGED FROM $state TO $change");
     state = change;
     setState(() {});
   }
@@ -111,13 +99,11 @@ Future<void> uploadSkin(BuildContext context, String username,WebViewXController
     },
   );
   if (response.body == "Success") {
-    showDialog(
-        context: context,
-        builder: (context) => const AlertDialog(
-              title: Text("Успех"),
-              content: Text("Вы успешно сменили скин"),
-            ));
-    webViewController.reload();
+    showCoolDialog(context, "Успех", "Вы успешно сменили скин");
+    webViewController.loadContent(
+      'https://skins.pootgard.fun/skinviewer/Minecraft-SkinViewer-master/index.php?name=$username',
+      SourceType.url,
+    );
   }
 }
 
@@ -223,7 +209,6 @@ class Register extends StatelessWidget {
   final Function register;
   final Function changeState;
 
-  //User user;
   Register({Key? key, required this.changeState, required this.register})
       : super(key: key);
   final TextEditingController usernameController = TextEditingController();
@@ -333,7 +318,6 @@ class Register extends StatelessWidget {
                           emailController,
                           passwdController,
                           repeatPasswdController,
-                          //secretCodeController,
                           register);
                     },
                     child: const Text(
@@ -371,7 +355,6 @@ Future<String> userReg(
     TextEditingController emailController,
     TextEditingController passwdController,
     TextEditingController repeatPasswdController,
-    //TextEditingController secretCodeController,
     Function register) async {
   if (!globals.isAuthOn) {
     showCoolDialog(context, "Ошибка", "Регистрация закрыта");

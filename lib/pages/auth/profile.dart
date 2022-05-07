@@ -68,7 +68,7 @@ class ProfileState extends State<Profile> {
                   ),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       /// приветствовать по времени суток
                       Text(

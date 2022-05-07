@@ -1,15 +1,20 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../../globals.dart' as globals;
-class News extends StatelessWidget{
+
+class News extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
       color: Colors.black,
       child: Center(
-        child: Text("Бета-тест\nВерсия сайта: ${globals.buildVersion}",style: TextStyle(color: Colors.amber,fontSize: 40),),
+        child: Text("Сайт в разработке\nВерсия: ${globals.buildVersion}",
+            style: GoogleFonts.jost(
+                //fontWeight: FontWeight.bold,
+                fontSize: 40.0,
+                color: Colors.white)),
       ),
     );
   }
-
 }

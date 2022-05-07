@@ -4,6 +4,6 @@ import 'user.dart';
 
 User user = User(email: "", username: "", password: "");
 
-bool isAuthOn = false;
+bool isAuthOn = true;
 
-String buildVersion = "0.0.15";
+String buildVersion = "0.1.21";

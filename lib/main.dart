@@ -126,29 +126,29 @@ class _HomePageState extends State<HomePage> {
                 isSelected: isSelected,
               )),
           Pages(controller),
-          Expanded(
-            flex: 1,
-            child: Container(
-                decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment(-0.1, 11),
-                    stops: [0.0, 0.5, 0.5, 1],
-                    colors: [
-                      Colors.black,
-                      Colors.black,
-                      const Color.fromARGB(255, 255, 93, 102),
-                      const Color.fromARGB(255, 255, 93, 102),
-                    ],
-                    tileMode: TileMode.repeated,
-                  ),
-                ),
-                child: const Center(
-                    child: Text(
-                  "WORK IN PROGRESS",
-                  style: TextStyle(fontSize: 45, color: Colors.white),
-                ))),
-          ),
+          // Expanded(
+          //   flex: 1,
+          //   child: Container(
+          //       decoration: const BoxDecoration(
+          //         gradient: LinearGradient(
+          //           begin: Alignment.topLeft,
+          //           end: Alignment(-0.1, 11),
+          //           stops: [0.0, 0.5, 0.5, 1],
+          //           colors: [
+          //             Colors.black,
+          //             Colors.black,
+          //             const Color.fromARGB(255, 255, 93, 102),
+          //             const Color.fromARGB(255, 255, 93, 102),
+          //           ],
+          //           tileMode: TileMode.repeated,
+          //         ),
+          //       ),
+          //       child: const Center(
+          //           child: Text(
+          //         "WORK IN PROGRESS",
+          //         style: TextStyle(fontSize: 45, color: Colors.white),
+          //       ))),
+          // ),
         ],
       ),
     );
@@ -183,7 +183,7 @@ class TopButton extends StatelessWidget {
                 child: Text(
                   text,
                   style: GoogleFonts.jost(
-                      fontSize: 25.0,
+                      fontSize: MediaQuery.of(context).size.width/100,
                       color: (isSelected[num])
                           ? getButtonGradientColor(num)
                           : Colors.black),

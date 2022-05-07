@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
-Future showCoolDialog(BuildContext context,String title,String content){
+Future showCoolDialog(BuildContext context, String title, String content) {
   return showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: Colors.black,
-        titleTextStyle: const TextStyle(color: Colors.amber),
-        contentTextStyle: const TextStyle(color: Colors.amber),
-        title: Text(title),
-        content: Text(content),
-      ));
+            backgroundColor: Colors.black,
+            titleTextStyle: const TextStyle(color: Colors.amber),
+            contentTextStyle: const TextStyle(color: Colors.amber),
+            title: Text(title),
+            content: Text(content),
+          ));
 }
 
 class InputField extends StatelessWidget {
@@ -21,8 +22,14 @@ class InputField extends StatelessWidget {
   final Function focus;
   final int positionInNodes;
   final List<FocusNode> nodes;
+
   const InputField(this._controller, this.hint, this.margins,
-      {Key? key, required this.characterLimit, required this.obscure, required this.focus, required this.positionInNodes, required this.nodes})
+      {Key? key,
+      required this.characterLimit,
+      required this.obscure,
+      required this.focus,
+      required this.positionInNodes,
+      required this.nodes})
       : super(key: key);
 
   @override
@@ -46,6 +53,9 @@ class InputField extends StatelessWidget {
                     colors: [Colors.amber, Colors.pinkAccent],
                   ))),
           TextField(
+            inputFormatters: [
+              FilteringTextInputFormatter.allow(RegExp("[a-zA-Z]"))
+            ],
             focusNode: nodes[positionInNodes],
             onSubmitted: (sub) {
               /// change focus to next node
@@ -63,7 +73,7 @@ class InputField extends StatelessWidget {
               focusColor: Colors.red,
               focusedBorder: const OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(20)),
-                  borderSide: BorderSide(color: Colors.pink,width: 2)),
+                  borderSide: BorderSide(color: Colors.pink, width: 2)),
               filled: true,
               hintText: hint,
               counterText: "",
